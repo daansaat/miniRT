@@ -56,7 +56,7 @@ int	main(void)
 		
 	ptr = mlx_init();
 	win = mlx_new_window(ptr, WIDTH, HEIGHT, "miniRT");
-	img_ptr = mlx_new_image(ptr, WIDTH, HEIGHT);
+	img_ptr = mlx_new_image(ptr, WIDTH + 1, HEIGHT + 1);
 	img.addr = mlx_get_data_addr(img_ptr, &img.bits_per_pixel, &img.line_length, &img.endian);
 	render(&img);
 	// color_img(&img);
