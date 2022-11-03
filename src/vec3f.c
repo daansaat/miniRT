@@ -1,6 +1,5 @@
 #include "../inc/vec3f.h"
 
-
 float	magnitude(vec3f v)
 {
 	return (sqrt(dot_product(v, v))); // sqrtf??

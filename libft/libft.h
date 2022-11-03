@@ -6,7 +6,7 @@
 /*   By: dsaat <dsaat@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/07 15:26:20 by dsaat         #+#    #+#                 */
-/*   Updated: 2022/04/07 18:38:27 by dsaat         ########   odam.nl         */
+/*   Updated: 2022/11/03 17:41:31 by daansaat      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,21 @@
 # define LIBFT_H
 # include <unistd.h>
 # include <stdlib.h>
+# include "../inc/sphere.h"
+
+typedef struct s_object t_object;
 
 typedef struct s_list
 {
-	void			*content;
+	t_object		*content;
 	struct s_list	*next;
 }					t_list;
+
+// typedef struct s_list
+// {
+// 	void			*content;
+// 	struct s_list	*next;
+// }					t_list;
 
 int		ft_isalnum(int c);
 int		ft_isalpha(int c);
