@@ -6,7 +6,7 @@
 /*   By: dsaat <dsaat@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/04/07 15:26:20 by dsaat         #+#    #+#                 */
-/*   Updated: 2022/11/03 17:41:31 by daansaat      ########   odam.nl         */
+/*   Updated: 2022/11/04 08:58:12 by daansaat      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define LIBFT_H
 # include <unistd.h>
 # include <stdlib.h>
-# include "../inc/sphere.h"
+
+# include "../inc/parser.h"
 
 typedef struct s_object t_object;
 
@@ -23,12 +24,6 @@ typedef struct s_list
 	t_object		*content;
 	struct s_list	*next;
 }					t_list;
-
-// typedef struct s_list
-// {
-// 	void			*content;
-// 	struct s_list	*next;
-// }					t_list;
 
 int		ft_isalnum(int c);
 int		ft_isalpha(int c);
@@ -61,6 +56,8 @@ char	**ft_split(char const *s, char c);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char	*ftoa(double nb);
 char	*ft_itoa(int n);
+float 	ft_atof(char *str);
+char	*ft_get_next_line(int fd);
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr(char *s);

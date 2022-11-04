@@ -1,18 +1,18 @@
 #include "../inc/vec3f.h"
 
-float	magnitude(vec3f v)
+float	magnitude(t_vec3f v)
 {
 	return (sqrt(dot_product(v, v))); // sqrtf??
 }
 
-float	dot_product(vec3f u, vec3f v)
+float	dot_product(t_vec3f u, t_vec3f v)
 {
 	return (u[0] * v[0] + u[1] * v[1] + u[2] * v[2]);
 }
 
-vec3f	cross_product(vec3f u, vec3f v)
+t_vec3f	cross_product(t_vec3f u, t_vec3f v)
 {
-	vec3f cross_product;
+	t_vec3f cross_product;
 
 	cross_product[0] = u[1] * v[2] - u[2] * v[1];
 	cross_product[1] = u[2] * v[0] - u[0] * v[2];
@@ -20,7 +20,7 @@ vec3f	cross_product(vec3f u, vec3f v)
 	return (cross_product);
 }
 
-vec3f	normalize(vec3f v) // multiplication more efficient then division
+t_vec3f	normalize(t_vec3f v) // multiplication more efficient then division
 {
 	float	len;
 	float	inv_len;

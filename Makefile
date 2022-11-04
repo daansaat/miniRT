@@ -6,7 +6,7 @@
 #    By: dsaat <dsaat@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/03/16 16:43:18 by dsaat         #+#    #+#                  #
-#    Updated: 2022/11/03 19:58:13 by daansaat      ########   odam.nl          #
+#    Updated: 2022/11/04 10:07:18 by daansaat      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,14 +23,14 @@ SRCS_LIST = \
 	ray.c \
 	render.c \
 	parser.c \
-	my_pixel_put.c
+	intersect.c
 SRCS = $(addprefix $(SRCS_DIR), $(SRCS_LIST))
 OBJS = $(SRCS:$(SRCS_DIR)%.c=obj/%.o)
 LIBS = -L ./minilibx -lmlx -L ./Libft -l ft
 CFLAGS = -Wall -Werror -Wextra
 FRAMEWORK = -framework OpenGl -framework AppKit
 INCLUDES = -I ./minilibx -I ./Libft -I ./inc
-HEAD = inc/miniRT.h inc/vec3f.h inc/cast_ray.h inc/render.h inc/sphere.h inc/parser.h
+HEAD = inc/miniRT.h inc/vec3f.h inc/ray.h inc/render.h inc/intersect.h inc/parser.h
 
 all: $(NAME)
 

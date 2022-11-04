@@ -9,22 +9,44 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int	main(void)
+# define ESC 53
+
+static int	close_program(t_mlx *mlx)
+{
+	mlx_destroy_image(mlx->ptr, mlx->img_ptr);
+	mlx_destroy_window(mlx->ptr, mlx->win);
+	exit(EXIT_SUCCESS);
+	//FREE MLX ENOUGH??
+}
+
+static int	keypress(int keycode, t_mlx *mlx)
+{
+	if (keycode == ESC)
+	{
+		mlx_destroy_image(mlx->ptr, mlx->img_ptr);
+		mlx_destroy_window(mlx->ptr, mlx->win);
+		exit (EXIT_SUCCESS);
+	}
+	return (0);
+}
+
+int	main(int argc, char *argv[])
 {	
-	t_img	img;
+	t_mlx	mlx;
 	t_scene	scene;
-	void	*ptr;
-	void	*win;
-	void	*img_ptr;
 		
-	scene.objects = NULL;
-	ptr = mlx_init();
-	win = mlx_new_window(ptr, WIDTH, HEIGHT, "miniRT");
-	img_ptr = mlx_new_image(ptr, WIDTH + 1, HEIGHT + 1);
-	img.addr = mlx_get_data_addr(img_ptr, &img.bits_per_pixel, &img.line_length, &img.endian);
-	create_scene(&scene);
-	render(&img, &scene);
-	mlx_put_image_to_window(ptr, win, img_ptr, 0, 0);
-	mlx_loop(ptr);
+	scene.objects = NULL; //WHY SEGVAULT IF NOT???
+	mlx.ptr = mlx_init();
+	mlx.win = mlx_new_window(mlx.ptr, WIDTH, HEIGHT, "miniRT");
+	mlx.img_ptr = mlx_new_image(mlx.ptr, WIDTH + 1, HEIGHT + 1);
+	mlx.img.addr = mlx_get_data_addr(mlx.img_ptr, &mlx.img.bits_per_pixel, &mlx.img.line_length, &mlx.img.endian);
+	parse_rt_file(argv[1], &scene);
+	render(&mlx.img, &scene, scene.camera);
+	mlx_put_image_to_window(mlx.ptr, mlx.win, mlx.img_ptr, 0, 0);
+	mlx_hook(mlx.win, 2, 0, keypress, &mlx);
+	mlx_hook(mlx.win, 17, 0, close_program, &mlx);
+	mlx_loop(mlx.ptr);
+	//FREE SCENE
+	//FREE MLX
 	return (0);
 }

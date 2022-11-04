@@ -11,28 +11,26 @@ SRCS		=	ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c \
                 ft_tolower.c ft_toupper.c ft_strcmp.c ft_putstr.c
 BONUS		=	ft_lstadd_back.c ft_lstadd_front.c ft_lstclear.c \
                 ft_lstdelone.c ft_lstiter.c ft_lstlast.c \
-                ft_lstmap.c ft_lstnew.c ft_lstsize.c
-ifdef EXTRA
+                ft_lstmap.c ft_lstnew.c ft_lstsize.c \
+                ft_get_next_line.c ft_atof.c
+
 OBJS		=	$(SRCS:.c=.o) $(BONUS:.c=.o)
-else
-OBJS		=	$(SRCS:.c=.o)
-endif
 
 $(NAME): $(OBJS)
-		ar rc $(NAME) $(OBJS)
+	@ar rc $(NAME) $(OBJS)
 
 all: 	$(NAME)
 
 %.o: 	%.c	
-		gcc $(CFLAGS) -o $@ -c $<
+	@gcc $(CFLAGS) -o $@ -c $<
 
 bonus:	
-		$(MAKE) EXTRA=OK
+	$(MAKE) EXTRA=OK
 
 clean:
-		rm -f $(SRCS:.c=.o) $(BONUS:.c=.o) 
+	@rm -f $(SRCS:.c=.o) $(BONUS:.c=.o) 
 
 fclean:	clean
-		rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: 	fclean all

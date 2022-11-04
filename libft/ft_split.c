@@ -12,75 +12,84 @@
 
 #include "libft.h"
 
-static int	ft_count(char const*s, char c)
+static int	ft_word_count(const char *s, char c)
 {
 	int	count;
+	int	i;
 
 	count = 0;
-	if (!s)
-		return (0);
-	while (*s)
+	i = 0;
+	while (s[i] != '\0')
 	{
-		while (*s == c && *s != '\0')
-			s++;
-		if (*s != c && *s != '\0')
+		if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0'))
 			count++;
-		while (*s != c && *s != '\0')
-			s++;
+		i++;
 	}
 	return (count);
 }
 
-static void	ft_get_str(char **str, int *i, char c)
+static int	ft_word_size(const char *s, int i, char c)
 {
-	*str = *str + *i;
-	*i = 0;
-	while (**str && **str == c)
-		(*str)++;
-	while (*(*str + *i))
+	int	size;
+
+	size = 0;
+	while (s[i] != c && s[i] != '\0')
 	{
-		if (*(*str + *i) == c)
-			break ;
-		(*i)++;
+		size++;
+		i++;
 	}
+	return (size);
 }
 
-static void	*ft_delete(char **ptr)
+static int	ft_skip(const char *s, char c)
 {
 	int	i;
 
 	i = 0;
-	while (ptr[i])
+	while (s[i] == c && s[i] != '\0')
+		i++;
+	return (i);
+}
+
+static char	**ft_delete(char **s1, int index)
+{
+	int	i;
+
+	i = 0;
+	while (i < index)
 	{
-		free(ptr[i]);
+		free(s1[i]);
 		i++;
 	}
-	free(ptr);
+	free(s1);
 	return (NULL);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**ptr;
-	char	*str;
-	int		nb_strs;
+	char	**s1;
+	int		word_count;
+	int		word_size;
+	int		index_s1;
 	int		i;
-	int		x;
 
-	nb_strs = ft_count(s, c);
-	ptr = ft_calloc(sizeof(char *), (nb_strs + 1));
-	if (!(ptr))
+	if (!s)
 		return (NULL);
-	i = 0;
-	x = 0;
-	str = (char *)s;
-	while (x < nb_strs)
+	word_count = ft_word_count(s, c);
+	s1 = (char **)malloc(sizeof(s) * (word_count + 1));
+	if (!s1)
+		return (NULL);
+	index_s1 = 0;
+	while (index_s1 < word_count)
 	{
-		ft_get_str(&str, &i, c);
-		ptr[x] = ft_substr(str, 0, i);
-		if (!(ptr[x]))
-			return (ft_delete(ptr));
-		x++;
+		i = ft_skip(s, c);
+		word_size = ft_word_size(s, i, c);
+		s1[index_s1] = ft_substr(s + i, 0, word_size);
+		if (!s1[index_s1])
+			return (ft_delete(s1, index_s1));
+		index_s1++;
+		s = s + i + word_size;
 	}
-	return (ptr);
+	s1[index_s1] = NULL;
+	return (s1);
 }

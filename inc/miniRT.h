@@ -4,6 +4,7 @@
 # define ASPECT_RATIO 16.0 / 9.0 // WIDTH / HEIGHT
 # define HEIGHT 400
 # define WIDTH (int)(HEIGHT * ASPECT_RATIO)
+# define BACKGROUNDCOLOR (t_vec3f){255, 255, 255}
 
 typedef struct s_img
 {
@@ -13,6 +14,12 @@ typedef struct s_img
 	int			endian;
 }				t_img;
 
-void	my_pixel_put(t_img *img, int x, int y, unsigned int colour);
+typedef struct s_mlx
+{
+	void	*ptr;
+	void	*win;
+	void	*img_ptr;
+	t_img	img;
+}			t_mlx;
 
 #endif

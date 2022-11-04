@@ -6,7 +6,7 @@
 /*   By: dsaat <dsaat@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/11/08 12:17:34 by dsaat         #+#    #+#                 */
-/*   Updated: 2021/11/08 13:07:44 by dsaat         ########   odam.nl         */
+/*   Updated: 2022/11/04 08:01:21 by daansaat      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,11 @@ t_list	*ft_lstnew(void *content)
 	t_list	*lst;
 
 	lst = malloc(sizeof(t_list));
-	if (lst != NULL)
-	{
-		lst->content = content;
-		lst->next = NULL;
-	}
+	if (!lst)
+		return (NULL);
+	lst->content = content;
+	lst->next = NULL;
+	// lst->type = NLL;
+	// free(content);
 	return (lst);
 }
