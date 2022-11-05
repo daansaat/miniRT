@@ -9,6 +9,12 @@ typedef struct s_object t_object;
 typedef struct s_ray t_ray;
 typedef struct s_list t_list;
 
+typedef struct s_ray
+{
+	t_vec3f	origin;
+	t_vec3f	direction;
+}			t_ray;
+
 typedef struct s_camera
 {
 	t_vec3f	origin;
@@ -24,20 +30,32 @@ typedef struct s_light
 {
 	t_vec3f	origin;
 	t_vec3f	color;
+	t_vec3f	ambient_color;
+	float	ambient;
 	float	brightness;
 }			t_light;
 
-typedef struct s_object
+typedef struct s_hitpoint
 {
-	t_vec3f	center;
-	t_vec3f	color;
-	t_vec3f	direction;
-	float	radius;
-	float	height;
-	bool	(*intersect)(t_ray camera, t_object object, float *t);
 	t_vec3f	point;
+	t_vec3f	center;
 	t_vec3f	normal;
 	t_vec3f	lightdir;
+	t_ray	shadow_ray;
+	float	diffuse;
+	float	specular;
+	bool	visibility;
+}			t_hitpoint;
+
+typedef struct s_object
+{
+	t_vec3f		center;
+	t_vec3f		color;
+	t_vec3f		direction;
+	t_hitpoint	hitpoint;
+	float		radius;
+	float		height;
+	bool		(*intersect)(t_ray camera, t_object object, float *t);
 }			t_object;
 
 typedef struct s_scene

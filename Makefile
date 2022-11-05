@@ -6,7 +6,7 @@
 #    By: dsaat <dsaat@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/03/16 16:43:18 by dsaat         #+#    #+#                  #
-#    Updated: 2022/11/04 10:07:18 by daansaat      ########   odam.nl          #
+#    Updated: 2022/11/05 20:27:19 by daansaat      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ SRCS_DIR = ./src/
 SRCS_LIST = \
 	main.c \
 	vec3f.c \
-	ray.c \
+	cast_ray.c \
 	render.c \
 	parser.c \
 	intersect.c
