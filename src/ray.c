@@ -34,6 +34,7 @@ bool	trace(t_ray camera, t_list *objects, t_object **hitobject, float *tnear)
 t_vec3f	cast_ray(t_ray cam_ray, t_scene *scene)
 {
 	t_object	*hitobject;
+	t_object	*shadowobject;
 	t_vec3f		hitcolor;
 	t_ray		shadow_ray;
 	bool		visibility;
@@ -41,22 +42,23 @@ t_vec3f	cast_ray(t_ray cam_ray, t_scene *scene)
 	// float		specular;
 	// float		ambient;
 	float		tnear;
+	float		tshadow;
 
 	hitobject = NULL;
+	shadowobject = NULL;
 	hitcolor = BACKGROUNDCOLOR;
 	tnear = INFINITY;
+	tshadow = INFINITY;
 	if (trace(cam_ray, scene->objects, &hitobject, &tnear))
 	{
 		hitobject->point = cam_ray.origin + cam_ray.direction * tnear;
 		hitobject->normal = normalize(hitobject->point - hitobject->center);
-		hitobject->lightdir = (hitobject->point - scene->light.origin); //NORMALIZE??
-		diffuse = 0.18f / (float)M_PI * scene->light.brightness * fmaxf(0.f, dot_product(hitobject->normal, hitobject->lightdir));
-		shadow_ray.origin = hitobject->point + hitobject->normal;
+		hitobject->lightdir = normalize(scene->light.origin - hitobject->point); //NORMALIZE??
+		diffuse = 0.4f * scene->light.brightness * fmaxf(0.f, dot_product(hitobject->normal, hitobject->lightdir));
+		shadow_ray.origin = (hitobject->point + hitobject->normal) * 1e-4f;
 		shadow_ray.direction = hitobject->lightdir * -1;
-		visibility = (!trace(shadow_ray, scene->objects, &hitobject, &tnear));
-		hitcolor = visibility * hitobject->color;// * diffuse;
-		// if (!trace(shadow_ray, scene->objects, &hitobject, &tnear))
-			// hitcolor = hitobject->color;// * diffuse;
+		visibility = (!trace(shadow_ray, scene->objects, &shadowobject, &tshadow));
+		hitcolor = visibility * hitobject->color * 0.2f + hitobject->color * diffuse;
 	}
 	return (hitcolor);
 }
