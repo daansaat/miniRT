@@ -35,6 +35,9 @@ typedef struct s_object
 	float	radius;
 	float	height;
 	bool	(*intersect)(t_ray camera, t_object object, float *t);
+	t_vec3f	point;
+	t_vec3f	normal;
+	t_vec3f	lightdir;
 }			t_object;
 
 typedef struct s_scene

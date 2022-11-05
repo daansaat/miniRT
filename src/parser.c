@@ -40,7 +40,7 @@ void	parse_camera(char **input, t_scene *scene)
 	scene->camera.horizontal = normalize(cross_product(scene->camera.direction, (t_vec3f){0, 1, 0}));
 	scene->camera.vertical = normalize(cross_product(scene->camera.horizontal, scene->camera.direction));
 	scene->camera.lower_left_corner = scene->camera.origin + scene->camera.direction * scene->camera.screen_distance \
-			+ scene->camera.horizontal * (-((float)WIDTH - 1.0) / 2) + scene->camera.vertical * (-((float)HEIGHT - 1.0) / 2);
+			- scene->camera.horizontal * (((float)WIDTH - 1.0) / 2) - scene->camera.vertical * (((float)HEIGHT - 1.0) / 2);
 	//FREE INPUT
 }
 
@@ -73,6 +73,18 @@ void	parse_sphere(char **input, t_scene *scene)
 
 void	parse_plane(char **input, t_scene *scene)
 {
+	t_object	*plane;
+	t_list		*new;
+
+	plane = malloc(sizeof(t_object));
+	if (!plane)
+		exit(1); //ERROR
+	get_vec3f(input[1], &(plane->center));
+	get_vec3f(input[2], &(plane->direction));
+	get_vec3f(input[3], &(plane->color));
+	plane->intersect = &intersect_plane;
+	new = ft_lstnew(plane);
+	ft_lstadd_back(&(scene->objects), new);
 	return;
 }
 

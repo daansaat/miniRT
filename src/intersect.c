@@ -3,30 +3,83 @@
 bool	intersect_sphere(t_ray ray, t_object sp, float *t)
 {
 	t_vec3f	oc;
-	float 	a;
-    float 	b;
-    float 	c;
+    float 	p;
+    float 	q;
     float 	discriminant;
+    float   t0;
+    float   t1;
+    float   root;
 
 	oc = ray.origin - sp.center;
-	a = dot_product(ray.direction, ray.direction);
-    b = 2.0 * dot_product(oc, ray.direction);
-    c = dot_product(oc, oc) - sp.radius * sp.radius;
-    discriminant = b * b - 4 * a * c;
-    if (discriminant < 1)
-        *t = -1.0;
-    else
-        *t = (-b - sqrt(discriminant) ) / (2.0 * a);
+    p = dot_product(ray.direction, oc);
+    q = dot_product(oc, oc) - (sp.radius * sp.radius);
+    discriminant = (p * p) - q;
+    if (discriminant < 0.0f)
+        return (false);
+    root = sqrt(discriminant);
+    t0 = -p + sqrt(discriminant);
+    t1 = -p - sqrt(discriminant);
+    if (t0 > 0.001 && t0 < t1)
+        *t = t0;
+    if (t1 > 0.001 && t1 < t0)
+        *t = t1;
     return (discriminant > 0);
 }
 
-// color ray_color(const ray& r) {
-//     auto t = hit_sphere(point3(0,0,-1), 0.5, r);
-//     if (t > 0.0) {
-//         vec3 N = unit_vector(r.at(t) - vec3(0,0,-1));
-//         return 0.5*color(N.x()+1, N.y()+1, N.z()+1);
+bool	intersect_plane(t_ray ray, t_object pl, float *t)
+{
+    float denom = dot_product(pl.direction, ray.direction);
+    if (denom > 1e-6)
+    {
+        t_vec3f p0l0 = pl.center - ray.origin;
+        *t = dot_product(p0l0, pl.direction) / denom;
+        return (*t >= 0);
+    }
+    return (false);
+}
+
+// bool	intersect_plane(t_ray ray, t_object pl, float *t)
+// {
+// 	float	root;
+	
+// 	if (dot_product(pl.direction, ray.direction) > 0)
+// 		pl.direction = pl.direction * -1;
+// 	root = dot_product(pl.direction, pl.center - ray.origin) / dot_product(pl.direction, ray.direction);
+// 	if (root > 0.00001)
+//     {
+// 		*t = root;
+//         return (true);
 //     }
-//     vec3 unit_direction = unit_vector(r.direction());
-//     t = 0.5*(unit_direction.y() + 1.0);
-//     return (1.0-t)*color(1.0, 1.0, 1.0) + t*color(0.5, 0.7, 1.0);
+// 	return (false);
+// }
+
+
+// bool	intersect_sphere(t_ray ray, t_object sp, float *t)
+// {
+// 	t_vec3f	oc;
+// 	float 	a;
+//     float 	b;
+//     float 	c;
+//     float 	discriminant;
+//     float   t0;
+//     float   t1;
+
+// 	oc = ray.origin - sp.center;
+// 	a = dot_product(ray.direction, ray.direction);
+//     b = 2.0 * dot_product(oc, ray.direction);
+//     c = dot_product(oc, oc) - sp.radius * sp.radius;
+//     discriminant = b * b - 4 * a * c;
+//     if (discriminant < 0)
+//         return (false);//*t = -1.0;
+//     else
+//     {
+//         // *t = (-b - sqrt(discriminant) ) / (2.0 * a);
+//         t0 = (-b + sqrt(discriminant)) / (2 * a);
+//         t1 = (-b - sqrt(discriminant)) / (2 * a);
+//     }
+//     if (t0 > 0.001 && t0 < t1)
+//         *t = t0;
+//     if (t1 > 0.001 && t1 < t0)
+//         *t = t1;
+//     return (discriminant > 0);
 // }

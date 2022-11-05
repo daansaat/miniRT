@@ -4,7 +4,6 @@
 
 #include <stdio.h>
 
-// P(t) = A + tb // Point = origin + t * direction //
 t_vec3f	point_at(t_ray ray, float t)
 {
 	t_vec3f point;
@@ -15,35 +14,49 @@ t_vec3f	point_at(t_ray ray, float t)
 	return (point);
 }
 
-bool	trace(t_ray camera, t_list *objects, t_object **hitobject, float *t)
+bool	trace(t_ray camera, t_list *objects, t_object **hitobject, float *tnear)
 {
+	float	t;
+
+	t = INFINITY;
 	while (objects)
 	{
-		if (objects->content->intersect(camera, *objects->content, t))
+		if (objects->content->intersect(camera, *objects->content, &t) && t < *tnear)
+		{
 			*hitobject = objects->content;
+			*tnear = t;
+		}
 		objects = objects->next;
 	}
 	return (*hitobject != NULL);
 }
 
-t_vec3f	cast_ray(t_ray camera, t_scene *scene)
+t_vec3f	cast_ray(t_ray cam_ray, t_scene *scene)
 {
 	t_object	*hitobject;
 	t_vec3f		hitcolor;
-	t_vec3f		hitpoint;
-	t_vec3f		hitnormal;
-	t_vec3f		lightdir;
-	float		albedo = 0.18 / M_PI;
-	float		t;
+	t_ray		shadow_ray;
+	bool		visibility;
+	float		diffuse;
+	// float		specular;
+	// float		ambient;
+	float		tnear;
 
 	hitobject = NULL;
 	hitcolor = BACKGROUNDCOLOR;
-	if (trace(camera, scene->objects, &hitobject, &t))
+	tnear = INFINITY;
+	if (trace(cam_ray, scene->objects, &hitobject, &tnear))
 	{
-		hitpoint = camera.origin + camera.direction * t;
-		lightdir = hitpoint - scene->light.origin;
-		hitnormal = normalize(hitpoint - hitobject->center);
-		hitcolor = hitobject->color * albedo * scene->light.brightness * fmaxf(0.f, dot_product(hitnormal, lightdir));
+		hitobject->point = cam_ray.origin + cam_ray.direction * tnear;
+		hitobject->normal = normalize(hitobject->point - hitobject->center);
+		hitobject->lightdir = (hitobject->point - scene->light.origin); //NORMALIZE??
+		diffuse = 0.18f / (float)M_PI * scene->light.brightness * fmaxf(0.f, dot_product(hitobject->normal, hitobject->lightdir));
+		shadow_ray.origin = hitobject->point + hitobject->normal;
+		shadow_ray.direction = hitobject->lightdir * -1;
+		visibility = (!trace(shadow_ray, scene->objects, &hitobject, &tnear));
+		hitcolor = visibility * hitobject->color;// * diffuse;
+		// if (!trace(shadow_ray, scene->objects, &hitobject, &tnear))
+			// hitcolor = hitobject->color;// * diffuse;
 	}
 	return (hitcolor);
 }
