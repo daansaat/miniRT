@@ -32,7 +32,9 @@ void	render(t_img *img, t_scene *scene, t_camera camera)
 		while (x++ < WIDTH - 1)
 		{
 			cam_ray.origin = camera.origin;
-			cam_ray.direction = normalize(camera.lower_left_corner + camera.horizontal * (float)x + camera.vertical * (float)y - camera.origin);
+			cam_ray.direction = normalize(camera.lower_left_corner \
+				+ camera.horizontal * (float)x \
+				+ camera.vertical * (float)y - camera.origin);
 			color = cast_ray(cam_ray, scene);
 			my_pixel_put(img, x, HEIGHT - y, (int)color[0] << 16 | (int)color[1] << 8 | (int)color[2]);			
 		}

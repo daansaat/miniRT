@@ -74,6 +74,6 @@ void	parse_light(char **input, t_scene *scene);
 void	parse_sphere(char **input, t_scene *scene);
 void	parse_plane(char **input, t_scene *scene);
 void	parse_cylinder(char **input, t_scene *scene);
-void	get_t_vec3f(char *input, t_vec3f *vec3f);
+t_vec3f	get_t_vec3f(char *input);
 
 #endif
