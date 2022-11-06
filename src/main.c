@@ -35,10 +35,16 @@ int	main(int argc, char *argv[])
 	t_mlx	mlx;
 	t_scene	scene;
 		
+	// t_vec3f color = {70, 70, 70};
+	// t_vec3f normal = normalize(color);
+	// printf("%f %f %f\n", normal[0], normal[1], normal[2]);
+	// normal = normalize_color(color);
+	// printf("%f %f %f\n", normal[0], normal[1], normal[2]);
+	// exit(0);
 	scene.objects = NULL; //WHY SEGVAULT IF NOT???
-	mlx.ptr = mlx_init();
-	mlx.win = mlx_new_window(mlx.ptr, WIDTH, HEIGHT, "miniRT");
-	mlx.img_ptr = mlx_new_image(mlx.ptr, WIDTH + 1, HEIGHT + 1);
+	mlx.ptr = mlx_init(); //MALLOC
+	mlx.win = mlx_new_window(mlx.ptr, WIDTH, HEIGHT, "miniRT"); //MALLOC
+	mlx.img_ptr = mlx_new_image(mlx.ptr, WIDTH + 1, HEIGHT + 1); //MALLOC
 	mlx.img.addr = mlx_get_data_addr(mlx.img_ptr, &mlx.img.bits_per_pixel, &mlx.img.line_length, &mlx.img.endian);
 	parse_rt_file(argv[1], &scene);
 	render(&mlx.img, &scene, scene.camera);

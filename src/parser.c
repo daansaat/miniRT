@@ -29,7 +29,7 @@ void	parse_ambient(char **input, t_scene *scene)
 	if (++i > 1)
 		exit(1);//ERROR
 	scene->light.ambient = ft_atof(input[1]);
-	scene->light.ambient_color = get_vec3f(input[2]);
+	scene->light.ambient_color = (get_vec3f(input[2]));
 }
 
 void	parse_camera(char **input, t_scene *scene)
@@ -59,6 +59,7 @@ void	parse_light(char **input, t_scene *scene)
 		exit(1);//ERROR
 	scene->light.origin = get_vec3f(input[1]);
 	scene->light.brightness = ft_atof(input[2]);
+	scene->light.color = get_vec3f(input[3]);
 }
 
 void	parse_sphere(char **input, t_scene *scene)
@@ -91,6 +92,10 @@ void	parse_plane(char **input, t_scene *scene)
 	plane->direction = get_vec3f(input[2]);
 	plane->color = get_vec3f(input[3]);
 	plane->intersect = &intersect_plane;
+
+	plane->hitpoint.type = 3;
+	plane->hitpoint.direction = plane->direction;
+
 	new = ft_lstnew(plane);
 	ft_lstadd_back(&(scene->objects), new);
 	return;

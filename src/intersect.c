@@ -28,8 +28,10 @@ bool	intersect_sphere(t_ray ray, t_object sp, float *t)
 
 bool	intersect_plane(t_ray ray, t_object pl, float *t)
 {
-    float denom = dot_product(pl.direction, ray.direction);
-    if (denom > 1e-6)
+    float   denom;
+    
+    denom = dot_product(pl.direction, ray.direction);
+    if (fabsf(denom) > 0.0001f)
     {
         t_vec3f p0l0 = pl.center - ray.origin;
         *t = dot_product(p0l0, pl.direction) / denom;
@@ -37,6 +39,34 @@ bool	intersect_plane(t_ray ray, t_object pl, float *t)
     }
     return (false);
 }
+
+// bool	intersect_plane(t_ray ray, t_object pl, float *t)
+// {
+//     float   root;
+    
+//     if (dot_product(pl.direction, ray.direction) > 0)
+//         pl.direction *= -1;
+//     root = dot_product(pl.direction, pl.center - ray.origin) / dot_product(pl.direction, ray.direction);
+//     if (root > 0.00001)
+//     {
+//         *t = root;
+//         return (true);
+//     }
+//     return (false);
+// }
+
+
+// bool	intersect_plane(t_ray ray, t_object pl, float *t)
+// {
+//     float d = dot_product(pl.center, -pl.direction);
+//     float root = -(d + dot_product(ray.origin, pl.direction)) / dot_product(ray.direction, pl.direction);
+//     if (root >= 0)
+//     {
+//         *t = root;
+//         return (true);
+//     }
+//     return (false);
+// }
 
 // bool	intersect_plane(t_ray ray, t_object pl, float *t)
 // {

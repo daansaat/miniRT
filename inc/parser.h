@@ -41,12 +41,16 @@ typedef struct s_hitpoint
 	t_vec3f	center;
 	t_vec3f	normal;
 	t_vec3f	lightdir;
+	float	lightmagnitude;
 	t_vec3f	viewdir;
 	t_vec3f	phongdir;
 	t_ray	shadow_ray;
 	float	reflet;
 	float	diffuse;
 	float	specular;
+
+	int		type;
+	t_vec3f	direction;
 }			t_hitpoint;
 
 typedef struct s_object

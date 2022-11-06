@@ -35,3 +35,19 @@ t_vec3f	normalize(t_vec3f v)
 	}
 	return (v);
 }
+
+t_vec3f	normalize_color(t_vec3f v)
+{
+	// float	len;
+	float	inv_len;
+	
+	// len = 255;//magnitude(v);
+	// if (len > 0)
+	// {
+		inv_len = 1 / (float)255;
+		v[0] *= inv_len;
+		v[1] *= inv_len;
+		v[2] *= inv_len;
+	// }
+	return (v);
+}
