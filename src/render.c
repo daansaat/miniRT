@@ -18,6 +18,14 @@ static void	my_pixel_put(t_img *img, int x, int y, unsigned int colour)
 	*(unsigned int *)dst = colour;
 }
 
+static void	set_camera_ray(int x, int y, t_camera camera, t_ray *cam_ray)
+{
+	cam_ray->origin = camera.origin;
+	cam_ray->direction = normalize(camera.lower_left_corner \
+		+ camera.horizontal * (float)x \
+		+ camera.vertical * (float)y - camera.origin);
+}
+
 void	render(t_img *img, t_scene *scene, t_camera camera)
 {	
 	int			x;
@@ -31,12 +39,10 @@ void	render(t_img *img, t_scene *scene, t_camera camera)
 		x = 0;
 		while (x++ < WIDTH - 1)
 		{
-			cam_ray.origin = camera.origin;
-			cam_ray.direction = normalize(camera.lower_left_corner \
-				+ camera.horizontal * (float)x \
-				+ camera.vertical * (float)y - camera.origin);
-			color = cast_ray(cam_ray, scene);
-			my_pixel_put(img, x, HEIGHT - y, (int)color[0] << 16 | (int)color[1] << 8 | (int)color[2]);			
+			set_camera_ray(x, y, camera, &cam_ray);
+			cast_ray(cam_ray, scene, &color);
+			my_pixel_put(img, x, HEIGHT - y, \
+				(int)color[0] << 16 | (int)color[1] << 8 | (int)color[2]);			
 		}
 	}
 }
