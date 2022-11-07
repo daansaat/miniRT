@@ -71,7 +71,7 @@ void	parse_sphere(char **input, t_scene *scene)
 	if (!sphere)
 		exit(1); //ERROR
 	sphere->center = get_vec3f(input[1]);
-	sphere->hitpoint.center = get_vec3f(input[1]);
+	sphere->hitpoint.objcenter = sphere->center;
 	sphere->color = get_vec3f(input[3]);
 	sphere->radius = ft_atof(input[2]);
 	sphere->intersect = &intersect_sphere;
@@ -88,21 +88,40 @@ void	parse_plane(char **input, t_scene *scene)
 	if (!plane)
 		exit(1); //ERROR
 	plane->center = get_vec3f(input[1]);
-	plane->hitpoint.center = get_vec3f(input[1]);
+	plane->hitpoint.objcenter = plane->center;
 	plane->direction = get_vec3f(input[2]);
+	plane->hitpoint.objdir = plane->direction;
 	plane->color = get_vec3f(input[3]);
 	plane->intersect = &intersect_plane;
 
-	plane->hitpoint.type = 3;
-	plane->hitpoint.direction = plane->direction;
+	plane->hitpoint.type = 2;
 
 	new = ft_lstnew(plane);
 	ft_lstadd_back(&(scene->objects), new);
-	return;
 }
 
 void	parse_cylinder(char **input, t_scene *scene)
 {
+	t_object	*cylinder;
+	t_list		*new;
+
+	cylinder = malloc(sizeof(t_object));
+	if (!cylinder)
+		exit(1); //ERROR
+	cylinder->center = get_vec3f(input[1]);
+	cylinder->hitpoint.objcenter = cylinder->center;
+	cylinder->direction = get_vec3f(input[2]);
+	cylinder->hitpoint.objdir = cylinder->direction;
+	cylinder->radius = ft_atof(input[3]) / 2.0f;
+	// cylinder->diameter = ft_atof(input[3]);
+	cylinder->height = ft_atof(input[4]);
+	cylinder->color = get_vec3f(input[5]);
+	cylinder->intersect = &intersect_cylinder;
+
+	cylinder->hitpoint.type = 3;
+
+	new = ft_lstnew(cylinder);
+	ft_lstadd_back(&(scene->objects), new);
 	return;
 }
 

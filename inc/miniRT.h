@@ -4,7 +4,7 @@
 # define ASPECT_RATIO 16.0 / 9.0 // WIDTH / HEIGHT
 # define HEIGHT 700
 # define WIDTH 700 //(int)(HEIGHT * ASPECT_RATIO)
-# define BACKGROUNDCOLOR (t_vec3f){255, 1, 1}
+# define BACKGROUNDCOLOR (t_vec3f){0, 0, 255}
 // # define INFINITY FLOAT_MAX
 
 typedef struct s_img

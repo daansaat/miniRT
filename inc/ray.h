@@ -14,6 +14,6 @@ typedef struct s_hitpoint t_hitpoint;
 
 t_vec3f	cast_ray(t_ray camera, t_scene *scene);
 bool	trace(t_ray camera, t_list *objects, t_object **hitobject, float *t);
-void	set_hitpoint_values(t_ray cam_ray, t_hitpoint *hitpoint, t_light light, float tnear);
+void	set_hitpoint_surface_data(t_ray cam_ray, t_hitpoint *hitpoint, t_light light, float tnear);
 
 #endif

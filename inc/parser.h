@@ -38,19 +38,18 @@ typedef struct s_light
 typedef struct s_hitpoint
 {
 	t_vec3f	point;
-	t_vec3f	center;
+	t_vec3f	objcenter;
+	t_vec3f	objdir;
 	t_vec3f	normal;
 	t_vec3f	lightdir;
-	float	lightmagnitude;
 	t_vec3f	viewdir;
-	t_vec3f	phongdir;
+	t_vec3f	mirrordir;
+	t_vec3f	intensity;
 	t_ray	shadow_ray;
-	float	reflet;
+	float	lightdistance;
 	float	diffuse;
 	float	specular;
-
 	int		type;
-	t_vec3f	direction;
 }			t_hitpoint;
 
 typedef struct s_object
@@ -60,6 +59,7 @@ typedef struct s_object
 	t_vec3f		direction;
 	t_hitpoint	hitpoint;
 	float		radius;
+	float		diameter;
 	float		height;
 	bool		(*intersect)(t_ray camera, t_object object, float *t);
 }			t_object;
