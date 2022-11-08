@@ -9,6 +9,20 @@ static float	clamp(float min, float max, float value)
 	return (fmaxf(min, fminf(max, value)));
 }
 
+static void	set_hitpoint_color(t_vec3f *pixelcolor, t_light light, t_object hitobject, bool visibility)
+{
+	t_vec3f hitpointcolor;
+
+	hitpointcolor = light.ambient * light.color \
+		+ visibility * hitobject.hitpoint.diffuse * hitobject.hitpoint.intensity \
+		+ visibility * hitobject.hitpoint.specular * hitobject.hitpoint.intensity;
+	hitpointcolor[0] = clamp(0, 255, hitpointcolor[0]);
+	hitpointcolor[1] = clamp(0, 255, hitpointcolor[1]);
+	hitpointcolor[2] = clamp(0, 255, hitpointcolor[2]);
+	hitpointcolor = hitobject.color / 255 * hitpointcolor;
+	*pixelcolor = hitpointcolor;
+}
+
 void	set_hitpoint_surface_data(t_ray cam_ray, t_hitpoint *hitpoint, t_light light, float tnear)
 {
 	hitpoint->point = cam_ray.origin + cam_ray.direction * tnear;
@@ -59,20 +73,6 @@ bool	trace(t_ray ray, t_list *objects, t_object **hitobject, float *tnear)
 		objects = objects->next;
 	}
 	return (*hitobject != NULL);
-}
-
-static void	set_hitpoint_color(t_vec3f *pixelcolor, t_light light, t_object hitobject, bool visibility)
-{
-	t_vec3f hitpointcolor;
-
-	hitpointcolor = light.ambient * light.color \
-		+ visibility * hitobject.hitpoint.diffuse * hitobject.hitpoint.intensity \
-		+ visibility * hitobject.hitpoint.specular * hitobject.hitpoint.intensity;
-	hitpointcolor[0] = clamp(0, 255, hitpointcolor[0]);
-	hitpointcolor[1] = clamp(0, 255, hitpointcolor[1]);
-	hitpointcolor[2] = clamp(0, 255, hitpointcolor[2]);
-	hitpointcolor = hitobject.color / 255 * hitpointcolor;
-	*pixelcolor = hitpointcolor;
 }
 
 void	cast_ray(t_ray cam_ray, t_scene *scene, t_vec3f *pixelcolor)
