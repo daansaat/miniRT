@@ -61,7 +61,21 @@ bool	trace(t_ray ray, t_list *objects, t_object **hitobject, float *tnear)
 	return (*hitobject != NULL);
 }
 
-void	cast_ray(t_ray cam_ray, t_scene *scene, t_vec3f *hitcolor)
+static void	set_hitpoint_color(t_vec3f *pixelcolor, t_light light, t_object hitobject, bool visibility)
+{
+	t_vec3f hitpointcolor;
+
+	hitpointcolor = light.ambient * light.color \
+		+ visibility * hitobject.hitpoint.diffuse * hitobject.hitpoint.intensity \
+		+ visibility * hitobject.hitpoint.specular * hitobject.hitpoint.intensity;
+	hitpointcolor[0] = clamp(0, 255, hitpointcolor[0]);
+	hitpointcolor[1] = clamp(0, 255, hitpointcolor[1]);
+	hitpointcolor[2] = clamp(0, 255, hitpointcolor[2]);
+	hitpointcolor = hitobject.color / 255 * hitpointcolor;
+	*pixelcolor = hitpointcolor;
+}
+
+void	cast_ray(t_ray cam_ray, t_scene *scene, t_vec3f *pixelcolor)
 {
 	t_object	*hitobject;
 	t_object	*shadowobject;
@@ -71,7 +85,7 @@ void	cast_ray(t_ray cam_ray, t_scene *scene, t_vec3f *hitcolor)
 
 	hitobject = NULL;
 	shadowobject = NULL;
-	*hitcolor = BACKGROUNDCOLOR;
+	*pixelcolor = BACKGROUNDCOLOR;
 	tnear = INFINITY;
 	tshadow = INFINITY;
 	if (trace(cam_ray, scene->objects, &hitobject, &tnear))
@@ -79,13 +93,7 @@ void	cast_ray(t_ray cam_ray, t_scene *scene, t_vec3f *hitcolor)
 		set_hitpoint_surface_data(cam_ray, &hitobject->hitpoint, scene->light, tnear);
 		visibility = (!trace(hitobject->hitpoint.shadow_ray, scene->objects, &shadowobject, &tshadow) \
 					|| tshadow > hitobject->hitpoint.lightdistance);
-		*hitcolor = scene->light.ambient * scene->light.color \
-			+ visibility * hitobject->hitpoint.diffuse * hitobject->hitpoint.intensity \
-			+ visibility * hitobject->hitpoint.specular * hitobject->hitpoint.intensity;
-		hitcolor[0] = clamp(0, 255, hitcolor[0]);
-		hitcolor[1] = clamp(0, 255, hitcolor[1]);
-		hitcolor[2] = clamp(0, 255, hitcolor[2]);
-		*hitcolor = hitobject->color / 255 * *hitcolor;
+		set_hitpoint_color(pixelcolor, scene->light, *hitobject, visibility);
 	}
 }
 
