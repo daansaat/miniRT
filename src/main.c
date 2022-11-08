@@ -35,12 +35,6 @@ int	main(int argc, char *argv[])
 	t_mlx	mlx;
 	t_scene	scene;
 		
-	// t_vec3f color = {70, 70, 70};
-	// t_vec3f normal = normalize(color);
-	// printf("%f %f %f\n", normal[0], normal[1], normal[2]);
-	// normal = normalize_color(color);
-	// printf("%f %f %f\n", normal[0], normal[1], normal[2]);
-	// exit(0);
 	scene.objects = NULL; //WHY SEGVAULT IF NOT???
 	mlx.ptr = mlx_init(); //MALLOC
 	mlx.win = mlx_new_window(mlx.ptr, WIDTH, HEIGHT, "miniRT"); //MALLOC
